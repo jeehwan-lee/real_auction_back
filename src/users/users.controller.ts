@@ -24,21 +24,14 @@ export class UsersController {
     await this.usersService.createUser(name, email, password);
   }
 
-  @Post('email-verify')
-  async verifyEmail(@Body() dto: VerifyEmailDto): Promise<string> {
-    console.log(dto);
-    return;
-  }
-
   @Post('/login')
   async login(@Body() dto: UserLoginDto): Promise<string> {
-    console.log(dto);
-    return;
+    const { email, password } = dto;
+    return await this.usersService.login(email, password);
   }
 
   @Get('/:id')
   async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
-    console.log(userId);
-    return;
+    return await this.usersService.getUserInfo(userId);
   }
 }

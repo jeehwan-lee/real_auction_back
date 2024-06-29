@@ -1,27 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import * as uuid from 'uuid';
+import { UserInfo } from './models/UserInfo';
 
 @Injectable()
 export class UsersService {
   async createUser(name: string, email: string, password: string) {
     await this.checkUserExists(email);
 
-    const signupVerifyToken = uuid.v1();
-
-    await this.saveUser(name, email, password, signupVerifyToken);
-    await this.sendMemberJoinEmail(email, signupVerifyToken);
+    await this.saveUser(name, email, password);
   }
 
   private checkUserExists(email: string) {
     return false;
   }
 
-  private saveUser(
-    name: string,
-    email: string,
-    password: string,
-    signupVerifyToken: string,
-  ) {
+  private saveUser(name: string, email: string, password: string) {
     return;
+  }
+
+  async login(email: string, password: string): Promise<string> {
+    throw new Error('Method not implemented');
+  }
+
+  async getUserInfo(userId: string): Promise<UserInfo> {
+    throw new Error('Method not implemented');
   }
 }
