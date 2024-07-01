@@ -13,12 +13,12 @@ export class UsersController {
   ) {}
 
   @Post('/create')
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<void> {
-    await this.usersService.createUser(createUserDto);
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    return await this.usersService.createUser(createUserDto);
   }
 
   @Post('/login')
-  async login(@Body() userLoginDto: UserLoginDto): Promise<UserInfo> {
+  async login(@Body() userLoginDto: UserLoginDto) {
     return await this.usersService.login(userLoginDto);
   }
 

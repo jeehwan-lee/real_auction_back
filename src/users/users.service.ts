@@ -7,7 +7,7 @@ import { UserInfo } from './models/UserInfo';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import * as uuid from 'uuid';
+import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
@@ -34,7 +34,7 @@ export class UsersService {
       throw new UnprocessableEntityException('이미 사용중인 닉네임입니다.');
     }
 
-    await this.saveUser(name, email, password);
+    return await this.saveUser(name, email, password);
   }
 
   async checkUserEmailExist(emailAddress: string) {
@@ -55,13 +55,18 @@ export class UsersService {
 
   async saveUser(name: string, email: string, password: string) {
     const user = new UserEntity();
+    const encryptedPassword = bcrypt.hashSync(password, 10);
+
     user.name = name;
     user.email = email;
-    user.password = password;
+    user.password = encryptedPassword;
     user.photoUrl =
       'https://firebasestorage.googleapis.com/v0/b/lovetrip-83cb0.appspot.com/o/image%2Fprofile%2FprofileDefault.jpg?alt=media&token=2d79ded7-787c-4156-bdac-44ef1c9788c2';
 
-    await this.userRepository.save(user);
+    const createdUser = await this.userRepository.save(user);
+    createdUser.password = undefined;
+
+    return createdUser;
   }
 
   async login(userLoginDto: UserLoginDto): Promise<UserInfo> {

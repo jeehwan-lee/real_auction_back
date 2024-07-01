@@ -11,10 +11,10 @@ export class UserEntity {
   @Column({ length: 60 })
   email: string;
 
-  @Column({ length: 30 })
+  @Column()
   password: string;
 
-  @Column({ length: 200 })
+  @Column()
   photoUrl: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
