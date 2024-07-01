@@ -14,9 +14,9 @@ export class UserEntity {
   @Column({ length: 30 })
   password: string;
 
-  @Column({ length: 60 })
+  @Column({ length: 200 })
   photoUrl: string;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMPSTAMP' })
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdDt: Date = new Date();
 }

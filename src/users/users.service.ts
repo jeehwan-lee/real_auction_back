@@ -85,6 +85,7 @@ export class UsersService {
       id: user.id,
       name: user.name,
       email: user.email,
+      photoUrl: user.photoUrl,
       token: token,
     };
   }
@@ -102,6 +103,7 @@ export class UsersService {
       id: user.id,
       name: user.name,
       email: user.email,
+      photoUrl: user.photoUrl,
     };
   }
 }
