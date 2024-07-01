@@ -18,9 +18,20 @@ export class UsersController {
   }
 
   @Post('/login')
-  async login(@Body() dto: UserLoginDto): Promise<UserInfo> {
-    const { email, password } = dto;
-    return await this.usersService.login(email, password);
+  async login(@Body() userLoginDto: UserLoginDto): Promise<UserInfo> {
+    return await this.usersService.login(userLoginDto);
+  }
+
+  @Get('/checkUserEmailExist/:email')
+  async getUserByEmail(@Param('email') email: string) {
+    const result = await this.usersService.checkUserEmailExist(email);
+    return result;
+  }
+
+  @Get('/checkUserNameExist/:name')
+  async getUserByName(@Param('name') name: string) {
+    const result = await this.usersService.checkUserNameExist(name);
+    return result;
   }
 
   @Get('/:id')

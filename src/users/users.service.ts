@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import * as uuid from 'uuid';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,16 +23,21 @@ export class UsersService {
   async createUser(createUserDto: CreateUserDto) {
     const { email, name, password } = createUserDto;
 
-    const userExist = await this.checkUserExists(email);
+    const userEmailExist = await this.checkUserEmailExist(email);
+    const userNameExist = await this.checkUserNameExist(name);
 
-    if (userExist) {
+    if (userEmailExist) {
       throw new UnprocessableEntityException('이미 가입된 이메일입니다.');
+    }
+
+    if (userNameExist) {
+      throw new UnprocessableEntityException('이미 사용중인 닉네임입니다.');
     }
 
     await this.saveUser(name, email, password);
   }
 
-  private async checkUserExists(emailAddress: string) {
+  async checkUserEmailExist(emailAddress: string) {
     const user = await this.userRepository.findOne({
       where: { email: emailAddress },
     });
@@ -39,17 +45,28 @@ export class UsersService {
     return user != undefined;
   }
 
-  private async saveUser(name: string, email: string, password: string) {
+  async checkUserNameExist(name: string) {
+    const user = await this.userRepository.findOne({
+      where: { name: name },
+    });
+
+    return user != undefined;
+  }
+
+  async saveUser(name: string, email: string, password: string) {
     const user = new UserEntity();
-    user.id = uuid.v1();
     user.name = name;
     user.email = email;
     user.password = password;
+    user.photoUrl =
+      'https://firebasestorage.googleapis.com/v0/b/lovetrip-83cb0.appspot.com/o/image%2Fprofile%2FprofileDefault.jpg?alt=media&token=2d79ded7-787c-4156-bdac-44ef1c9788c2';
 
     await this.userRepository.save(user);
   }
 
-  async login(email: string, password: string): Promise<UserInfo> {
+  async login(userLoginDto: UserLoginDto): Promise<UserInfo> {
+    const { email, password } = userLoginDto;
+
     const user = await this.userRepository.findOne({
       where: { email, password },
     });
