@@ -31,7 +31,6 @@ export class AuthService {
 
       return { userId: id, email: email };
     } catch (e) {
-      console.log(e);
       throw new UnauthorizedException();
     }
   }

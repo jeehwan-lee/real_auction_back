@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Param, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
-import { UserInfo } from './models/UserInfo';
 import { AuthService } from 'src/auth/auth.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
 export class UsersController {
@@ -34,15 +34,9 @@ export class UsersController {
     return result;
   }
 
+  @UseGuards(AuthGuard)
   @Get('/:id')
-  async getUserInfo(
-    @Headers() headers: any,
-    @Param('id') userId: string,
-  ): Promise<UserInfo> {
-    const jwtString = headers.authorization.split('Bearer ')[1];
-
-    this.authService.verify(jwtString);
-
+  async getUserInfo(@Param('id') userId: string) {
     return await this.usersService.getUserInfo(userId);
   }
 }
