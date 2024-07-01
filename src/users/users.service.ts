@@ -9,6 +9,7 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as uuid from 'uuid';
 import { AuthService } from 'src/auth/auth.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -18,7 +19,9 @@ export class UsersService {
     private authService: AuthService,
   ) {}
 
-  async createUser(name: string, email: string, password: string) {
+  async createUser(createUserDto: CreateUserDto) {
+    const { email, name, password } = createUserDto;
+
     const userExist = await this.checkUserExists(email);
 
     if (userExist) {
