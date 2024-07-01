@@ -73,11 +73,11 @@ export class UsersService {
     const { email, password } = userLoginDto;
 
     const user = await this.userRepository.findOne({
-      where: { email, password },
+      where: { email: email },
     });
 
-    if (!user) {
-      throw new NotFoundException('유저가 존재하지 않습니다.');
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+      throw new NotFoundException('이메일과 비밀번호를 확인해주세요.');
     }
 
     const token = await this.authService.getUserToken({
