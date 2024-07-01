@@ -12,16 +12,14 @@ export class AuthService {
   getUserToken(user: User) {
     const payload = { ...user };
 
-    return jwt.sign(payload, 'SECRETKEY', {
+    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: '1d',
-      audience: 'example.com',
-      issuer: 'example.com',
     });
   }
 
   verify(jwtString: string) {
     try {
-      const payload = jwt.verify(jwtString, 'SECRETKEY') as (
+      const payload = jwt.verify(jwtString, process.env.JWT_SECRET_KEY) as (
         | jwt.JwtHeader
         | string
       ) &
