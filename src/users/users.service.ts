@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -92,6 +93,27 @@ export class UsersService {
       email: user.email,
       photoUrl: user.photoUrl,
       token: token,
+    };
+  }
+
+  async updateUser(updateUserDto: UpdateUserDto) {
+    const encryptedPassword = bcrypt.hashSync(updateUserDto.password, 10);
+
+    const result = await this.userRepository.update(
+      { email: updateUserDto.email },
+      {
+        name: updateUserDto.name,
+        password: encryptedPassword,
+      },
+    );
+
+    if (result.affected != 1) {
+      throw new UnprocessableEntityException('존재하지 않는 사용자입니다.');
+    }
+
+    return {
+      name: updateUserDto.name,
+      email: updateUserDto.email,
     };
   }
 

@@ -1,16 +1,21 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Put,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
-import { AuthService } from 'src/auth/auth.service';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UsersController {
-  constructor(
-    private usersService: UsersService,
-    private authService: AuthService,
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   @Post('/create')
   async createUser(@Body() createUserDto: CreateUserDto) {
@@ -32,6 +37,12 @@ export class UsersController {
   async getUserByName(@Param('name') name: string) {
     const result = await this.usersService.checkUserNameExist(name);
     return result;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/update')
+  async updateUser(@Body() updateUserDto: UpdateUserDto) {
+    return await this.usersService.updateUser(updateUserDto);
   }
 
   @UseGuards(AuthGuard)
