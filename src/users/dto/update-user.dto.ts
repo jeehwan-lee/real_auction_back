@@ -22,4 +22,6 @@ export class UpdateUserDto {
   @IsString()
   @Matches(/^[A-Za-z\d!@#$%^&*()]{8,30}$/)
   password: string;
+
+  photoUrl: string;
 }

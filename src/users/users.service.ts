@@ -62,7 +62,7 @@ export class UsersService {
     user.email = email;
     user.password = encryptedPassword;
     user.photoUrl =
-      'https://firebasestorage.googleapis.com/v0/b/lovetrip-83cb0.appspot.com/o/image%2Fprofile%2FprofileDefault.jpg?alt=media&token=2d79ded7-787c-4156-bdac-44ef1c9788c2';
+      'https://real-auction.s3.ap-southeast-2.amazonaws.com/image/profile/defaultImage';
 
     const createdUser = await this.userRepository.save(user);
     createdUser.password = undefined;
@@ -104,6 +104,7 @@ export class UsersService {
       {
         name: updateUserDto.name,
         password: encryptedPassword,
+        photoUrl: updateUserDto.photoUrl,
       },
     );
 
@@ -114,6 +115,7 @@ export class UsersService {
     return {
       name: updateUserDto.name,
       email: updateUserDto.email,
+      photoUrl: updateUserDto.photoUrl,
     };
   }
 
