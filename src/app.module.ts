@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+import { AuctionController } from './auction/auction.controller';
+import { AuctionService } from './auction/auction.service';
+import { AuctionModule } from './auction/auction.module';
 
 @Module({
   imports: [
@@ -18,12 +21,13 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
     }),
     UsersModule,
     AuthModule,
+    AuctionModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AuthService],
+  controllers: [AppController, AuctionController],
+  providers: [AppService, AuthService, AuctionService],
 })
 export class AppModule {}

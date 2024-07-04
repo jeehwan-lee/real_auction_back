@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AuctionEntity } from 'src/auction/entities/auction.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('User')
 export class UserEntity {
@@ -19,4 +20,7 @@ export class UserEntity {
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdDt: Date = new Date();
+
+  @OneToMany(() => AuctionEntity, (auction) => auction.user)
+  auctions: AuctionEntity[];
 }
