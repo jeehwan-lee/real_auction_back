@@ -14,4 +14,12 @@ export class AuctionService {
   async createAuction(createAuctionDto: CreateAuctionDto) {
     return await this.auctionRepository.save(createAuctionDto);
   }
+
+  async getAuctionList() {
+    const auctionList = await this.auctionRepository.find({
+      relations: ['user'],
+    });
+
+    return auctionList;
+  }
 }

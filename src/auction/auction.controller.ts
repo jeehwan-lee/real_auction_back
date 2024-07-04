@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AuctionService } from './auction.service';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 
@@ -9,5 +9,15 @@ export class AuctionController {
   @Post('create')
   async createAuction(@Body() createAuctionDto: CreateAuctionDto) {
     return await this.auctionService.createAuction(createAuctionDto);
+  }
+
+  @Get('/list')
+  async getAllAuctionList() {
+    return await this.auctionService.getAuctionList();
+  }
+
+  @Get('/list/:id')
+  async getAuctionListByUserId(@Param('id') userId: string) {
+    return null;
   }
 }
