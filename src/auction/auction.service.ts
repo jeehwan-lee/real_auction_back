@@ -22,4 +22,14 @@ export class AuctionService {
 
     return auctionList;
   }
+
+  async getAuctionListByUserId(userId: string) {
+    const auctionList = await this.auctionRepository.find({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return auctionList;
+  }
 }

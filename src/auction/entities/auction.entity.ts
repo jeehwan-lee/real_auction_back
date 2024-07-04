@@ -24,6 +24,9 @@ export class AuctionEntity {
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdDt: Date = new Date();
 
+  @Column()
+  userId: string;
+
   @ManyToOne(() => UserEntity, (user) => user.auctions)
   user: UserEntity;
 }

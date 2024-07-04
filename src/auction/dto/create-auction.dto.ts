@@ -27,6 +27,6 @@ export class CreateAuctionDto {
   @IsString()
   photoUrl: string;
 
-  @IsNumber()
-  userId: number;
+  @IsString()
+  userId: string;
 }

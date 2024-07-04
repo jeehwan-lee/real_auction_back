@@ -18,6 +18,6 @@ export class AuctionController {
 
   @Get('/list/:id')
   async getAuctionListByUserId(@Param('id') userId: string) {
-    return null;
+    return await this.auctionService.getAuctionListByUserId(userId);
   }
 }
