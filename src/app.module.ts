@@ -27,7 +27,7 @@ import { AuctionModule } from './auction/auction.module';
     AuthModule,
     AuctionModule,
   ],
-  controllers: [AppController, AuctionController],
-  providers: [AppService, AuthService, AuctionService],
+  controllers: [AppController],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}
