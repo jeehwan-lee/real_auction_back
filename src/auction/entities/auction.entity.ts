@@ -28,6 +28,9 @@ export class AuctionEntity {
   @Column()
   photoUrl: string;
 
+  @Column({ length: 30 })
+  category: string;
+
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdDt: Date = new Date();
 

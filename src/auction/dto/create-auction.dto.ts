@@ -19,6 +19,11 @@ export class CreateAuctionDto {
   description: string;
 
   @IsString()
+  @MinLength(1)
+  @MaxLength(30)
+  category: string;
+
+  @IsString()
   startPrice: string;
 
   @IsDateString()
