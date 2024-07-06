@@ -21,6 +21,7 @@ export class NoticeService {
         userId: userId,
       },
       relations: ['user', 'auction'],
+      order: { createdDt: 'DESC' },
     });
 
     return noticeList;
