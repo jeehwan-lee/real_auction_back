@@ -3,16 +3,31 @@ import { AuctionEntity } from './entities/auction.entity';
 import { Repository } from 'typeorm';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 import { Injectable } from '@nestjs/common';
+import { NoticeService } from 'src/notice/notice.service';
+import { CreateNoticeDto } from 'src/notice/dto/create-notice.dto';
 
 @Injectable()
 export class AuctionService {
   constructor(
     @InjectRepository(AuctionEntity)
     private auctionRepository: Repository<AuctionEntity>,
+
+    private noticeService: NoticeService,
   ) {}
 
   async createAuction(createAuctionDto: CreateAuctionDto) {
-    return await this.auctionRepository.save(createAuctionDto);
+    const createdAuction = await this.auctionRepository.save(createAuctionDto);
+
+    const notice = new CreateNoticeDto();
+
+    notice.name = '경매개시';
+    notice.description = createAuctionDto.name;
+    notice.userId = createAuctionDto.userId;
+    notice.auctionId = Number(createdAuction.id);
+
+    await this.noticeService.createNotice(notice);
+
+    return createdAuction;
   }
 
   async getAuctionList() {
