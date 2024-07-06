@@ -23,7 +23,7 @@ export class AuctionService {
     return auctionList;
   }
 
-  async getAuctionListByUserId(userId: string) {
+  async getAuctionListByUserId(userId: number) {
     const auctionList = await this.auctionRepository.find({
       where: {
         userId: userId,

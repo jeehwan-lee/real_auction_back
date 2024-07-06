@@ -13,7 +13,7 @@ export class AuctionEntity {
   description: string;
 
   @Column()
-  startPrice: number;
+  startPrice: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   endDate: Date = new Date();
@@ -25,7 +25,7 @@ export class AuctionEntity {
   createdDt: Date = new Date();
 
   @Column()
-  userId: string;
+  userId: number;
 
   @ManyToOne(() => UserEntity, (user) => user.auctions)
   user: UserEntity;

@@ -18,8 +18,8 @@ export class CreateAuctionDto {
   @MaxLength(60)
   description: string;
 
-  @IsNumber()
-  startPrice: number;
+  @IsString()
+  startPrice: string;
 
   @IsDateString()
   endDate: Date = new Date();
@@ -27,6 +27,6 @@ export class CreateAuctionDto {
   @IsString()
   photoUrl: string;
 
-  @IsString()
-  userId: string;
+  @IsNumber()
+  userId: number;
 }
