@@ -12,9 +12,18 @@ export class AuctionController {
     return await this.auctionService.createAuction(createAuctionDto);
   }
 
-  @Get('/list')
+  @Get('/list/')
   async getAllAuctionList() {
     return await this.auctionService.getAuctionList();
+  }
+
+  @Get('/list/:searchParam')
+  async getAllAuctionListBySearchParam(
+    @Param('searchParam') searchParam: string,
+  ) {
+    return await this.auctionService.getAllAuctionListBySearchParam(
+      searchParam,
+    );
   }
 
   @Get('/list/:id')

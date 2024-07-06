@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuctionEntity } from './entities/auction.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 import { Injectable } from '@nestjs/common';
 import { NoticeService } from 'src/notice/notice.service';
@@ -20,7 +20,7 @@ export class AuctionService {
 
     const notice = new CreateNoticeDto();
 
-    notice.name = '경매개시';
+    notice.name = '경매개설';
     notice.description = createAuctionDto.name;
     notice.userId = createAuctionDto.userId;
     notice.auctionId = Number(createdAuction.id);
@@ -32,6 +32,17 @@ export class AuctionService {
 
   async getAuctionList() {
     const auctionList = await this.auctionRepository.find({
+      relations: ['user'],
+    });
+
+    return auctionList;
+  }
+
+  async getAllAuctionListBySearchParam(searchParam: string) {
+    const auctionList = await this.auctionRepository.find({
+      where: {
+        name: Like(`%${searchParam}%`),
+      },
       relations: ['user'],
     });
 
