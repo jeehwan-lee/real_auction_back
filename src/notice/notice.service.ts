@@ -14,4 +14,14 @@ export class NoticeService {
   async createNotice(createNoticeDto: CreateNoticeDto) {
     return await this.noticeRepository.save(createNoticeDto);
   }
+
+  async getNoticeListByUserId(userId: number) {
+    const noticeList = await this.noticeRepository.find({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return noticeList;
+  }
 }
