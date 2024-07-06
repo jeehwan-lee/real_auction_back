@@ -1,3 +1,4 @@
+import { AuctionEntity } from 'src/auction/entities/auction.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -14,6 +15,9 @@ export class NoticeEntity {
 
   @Column()
   auctionId: number;
+
+  @ManyToOne(() => AuctionEntity, (auction) => auction.notices)
+  auction: AuctionEntity;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdDt: Date = new Date();

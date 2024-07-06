@@ -20,7 +20,7 @@ export class NoticeService {
       where: {
         userId: userId,
       },
-      relations: ['user'],
+      relations: ['user', 'auction'],
     });
 
     return noticeList;

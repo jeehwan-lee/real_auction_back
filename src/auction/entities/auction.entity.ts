@@ -1,5 +1,12 @@
+import { NoticeEntity } from 'src/notice/entities/notice.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('Auction')
 export class AuctionEntity {
@@ -29,4 +36,7 @@ export class AuctionEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.auctions)
   user: UserEntity;
+
+  @OneToMany(() => NoticeEntity, (notice) => notice.user)
+  notices: NoticeEntity[];
 }
