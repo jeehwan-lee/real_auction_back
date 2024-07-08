@@ -32,7 +32,7 @@ export class AuctionService {
 
   async getAuctionList() {
     const auctionList = await this.auctionRepository.find({
-      relations: ['user'],
+      relations: ['user', 'attendances'],
     });
 
     return auctionList;
@@ -43,7 +43,7 @@ export class AuctionService {
       where: {
         name: Like(`%${searchParam}%`),
       },
-      relations: ['user'],
+      relations: ['user', 'attendances'],
     });
 
     return auctionList;
@@ -54,6 +54,7 @@ export class AuctionService {
       where: {
         userId: userId,
       },
+      relations: ['attendances'],
     });
 
     return auctionList;
