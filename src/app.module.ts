@@ -10,6 +10,7 @@ import { AuctionController } from './auction/auction.controller';
 import { AuctionService } from './auction/auction.service';
 import { AuctionModule } from './auction/auction.module';
 import { NoticeModule } from './notice/notice.module';
+import { AttendanceModule } from './attendance/attendance.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { NoticeModule } from './notice/notice.module';
     AuthModule,
     AuctionModule,
     NoticeModule,
+    AttendanceModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],

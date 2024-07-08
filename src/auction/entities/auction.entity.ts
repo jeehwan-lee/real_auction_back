@@ -1,3 +1,4 @@
+import { AttendaceEntity } from 'src/attendance/entities/attendance.entity';
 import { NoticeEntity } from 'src/notice/entities/notice.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
@@ -40,6 +41,9 @@ export class AuctionEntity {
   @ManyToOne(() => UserEntity, (user) => user.auctions)
   user: UserEntity;
 
-  @OneToMany(() => NoticeEntity, (notice) => notice.user)
+  @OneToMany(() => NoticeEntity, (notice) => notice.auction)
   notices: NoticeEntity[];
+
+  @OneToMany(() => AttendaceEntity, (attendance) => attendance.auction)
+  attendances: AttendaceEntity[];
 }
