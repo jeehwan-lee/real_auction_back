@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreateAttendanceDto {
   @IsNumber()
@@ -6,4 +6,7 @@ export class CreateAttendanceDto {
 
   @IsNumber()
   userId: number;
+
+  @IsString()
+  auctionName: string;
 }

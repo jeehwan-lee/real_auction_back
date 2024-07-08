@@ -3,15 +3,31 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AttendaceEntity } from './entities/attendance.entity';
 import { Repository } from 'typeorm';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
+import { NoticeService } from 'src/notice/notice.service';
+import { CreateNoticeDto } from 'src/notice/dto/create-notice.dto';
 
 @Injectable()
 export class AttendanceService {
   constructor(
     @InjectRepository(AttendaceEntity)
     private attendanceRepository: Repository<AttendaceEntity>,
+
+    private noticeService: NoticeService,
   ) {}
 
   async createAttendance(createAttendanceDto: CreateAttendanceDto) {
-    return await this.attendanceRepository.save(createAttendanceDto);
+    const createdAttendance =
+      await this.attendanceRepository.save(createAttendanceDto);
+
+    const notice = new CreateNoticeDto();
+
+    notice.name = '경매참석';
+    notice.description = createAttendanceDto.auctionName;
+    notice.userId = createAttendanceDto.userId;
+    notice.auctionId = createAttendanceDto.auctionId;
+
+    await this.noticeService.createNotice(notice);
+
+    return createdAttendance;
   }
 }

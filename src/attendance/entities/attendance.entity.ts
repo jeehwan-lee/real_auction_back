@@ -1,7 +1,7 @@
 import { AuctionEntity } from 'src/auction/entities/auction.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('Attendace')
+@Entity('Attendance')
 export class AttendaceEntity {
   @PrimaryGeneratedColumn()
   id: string;
