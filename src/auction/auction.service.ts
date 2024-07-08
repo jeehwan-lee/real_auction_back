@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuctionEntity } from './entities/auction.entity';
-import { Like, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 import { Injectable } from '@nestjs/common';
 import { NoticeService } from 'src/notice/notice.service';
@@ -61,13 +61,25 @@ export class AuctionService {
   }
 
   async getAuctionListByUserId(userId: number) {
-    const auctionList = await this.auctionRepository.find({
+    // userId를 통해 Attendance Table에서 참석하고 있는 auctionId를 가져옴
+    const attendanceList = await this.attendanceRepository.find({
       where: {
         userId: userId,
       },
-      relations: ['attendances'],
     });
 
-    return auctionList;
+    const auctionIdList = [];
+
+    attendanceList.map((attendance) => {
+      auctionIdList.push(attendance.auctionId);
+    });
+
+    // auctionId를 통해 Auction Table에서 Auction 정보를 가져와서 return
+    return await this.auctionRepository.find({
+      where: {
+        id: In(auctionIdList),
+      },
+      relations: ['attendances'],
+    });
   }
 }
