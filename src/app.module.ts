@@ -12,6 +12,7 @@ import { AuctionModule } from './auction/auction.module';
 import { NoticeModule } from './notice/notice.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { ChatGateway } from './chat/chat.gateway';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -31,8 +32,9 @@ import { ChatGateway } from './chat/chat.gateway';
     AuctionModule,
     NoticeModule,
     AttendanceModule,
+    ChatModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, ChatGateway],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}

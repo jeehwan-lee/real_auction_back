@@ -4,29 +4,43 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { AttendanceService } from 'src/attendance/attendance.service';
 
 @WebSocketGateway({ cors: 'http://localhost:3000' })
 export class ChatGateway {
   @WebSocketServer() server: Server;
 
+  constructor(private attendanceService: AttendanceService) {}
+
   @SubscribeMessage('message')
   handleMessage(socket: Socket, data: any) {
-    // 1. 메세지를 받으면 MESSAGE DB에 저장
-    // 2. 받은 메세지를 접속한 방에 브로드캐스트 방식으로 전송
     const { userId, roomId, message } = data;
 
-    socket.to(roomId).emit('message', message);
+    // 1. 메세지를 받으면 MESSAGE DB에 저장
+    // 2. 받은 메세지를 접속한 방에 브로드캐스트 방식으로 전송
+    socket.to(roomId).emit('message', data);
   }
 
   @SubscribeMessage('join')
-  joinAuctionRoom(socket: Socket, data: any) {
-    const { userId, roomId } = data;
-    // 1. Attendance Table에서 기존에 접속한 사용자인지 확인
-    // 2. 새로 접속한 사용자일 경우 "이지환님이 접속했습니다" 메세지 브로드캐스트 방식으로 전송
+  async joinAuctionRoom(socket: Socket, data: any) {
+    const { userId, userName, roomId } = data;
+
     socket.join(roomId);
 
-    socket
-      .to(roomId)
-      .emit('message', `${roomId} 옥션에 있는 사람들에게 보내는 메세지입니다.`);
+    // 1. Attendance Table에서 기존에 접속한 사용자인지 확인
+    const attendanceCheckResult =
+      await this.attendanceService.checkUserInAuctionRoom(userId, roomId);
+
+    // 2. 새로 접속한 사용자일 경우
+    // Attendance Enter SERVICE 실행 -> ATTENDANCE TABLE에 사용자 저장
+    // "이지환님이 접속했습니다" 메세지 브로드캐스트 방식으로 전송
+    if (attendanceCheckResult.length == 0) {
+      socket.to(roomId).emit('message', {
+        type: 'notice',
+        message: `${userName}님이 접속했습니다`,
+      });
+
+      // 위 메세지 CHAT DB에 저장하기
+    }
   }
 }

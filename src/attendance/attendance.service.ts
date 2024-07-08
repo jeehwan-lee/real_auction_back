@@ -30,4 +30,13 @@ export class AttendanceService {
 
     return createdAttendance;
   }
+
+  async checkUserInAuctionRoom(userId: number, auctionId: number) {
+    return await this.attendanceRepository.find({
+      where: {
+        userId: userId,
+        auctionId: auctionId,
+      },
+    });
+  }
 }
