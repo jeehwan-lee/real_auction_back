@@ -7,7 +7,7 @@ export class AttendanceController {
   constructor(private attendanceService: AttendanceService) {}
 
   @Post('/enter')
-  async createAuction(@Body() createAttendanceDto: CreateAttendanceDto) {
+  async createAttendance(@Body() createAttendanceDto: CreateAttendanceDto) {
     return await this.attendanceService.createAttendance(createAttendanceDto);
   }
 }

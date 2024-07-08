@@ -6,9 +6,12 @@ import { AuctionService } from './auction.service';
 import { AuthService } from 'src/auth/auth.service';
 import { NoticeService } from 'src/notice/notice.service';
 import { NoticeEntity } from 'src/notice/entities/notice.entity';
+import { AttendaceEntity } from 'src/attendance/entities/attendance.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuctionEntity, NoticeEntity])],
+  imports: [
+    TypeOrmModule.forFeature([AuctionEntity, NoticeEntity, AttendaceEntity]),
+  ],
   controllers: [AuctionController],
   providers: [AuctionService, AuthService, NoticeService],
 })
