@@ -32,9 +32,10 @@ export class ChatGateway {
       await this.attendanceService.checkUserInAuctionRoom(userId, roomId);
 
     // 2. 새로 접속한 사용자일 경우
-    // Attendance Enter SERVICE 실행 -> ATTENDANCE TABLE에 사용자 저장
-    // "이지환님이 접속했습니다" 메세지 브로드캐스트 방식으로 전송
+
     if (attendanceCheckResult.length == 0) {
+      // Attendance Enter SERVICE 실행 -> ATTENDANCE TABLE에 사용자 저장
+      // "이지환님이 접속했습니다" 메세지 브로드캐스트 방식으로 전송
       socket.to(roomId).emit('message', {
         type: 'notice',
         message: `${userName}님이 접속했습니다`,
