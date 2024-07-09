@@ -1,4 +1,6 @@
 import {
+  OnGatewayConnection,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -9,7 +11,7 @@ import { AuctionService } from 'src/auction/auction.service';
 import { ChatService } from './chat.service';
 
 @WebSocketGateway({ cors: 'http://localhost:3000' })
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
   constructor(
@@ -18,33 +20,55 @@ export class ChatGateway {
     private chatService: ChatService,
   ) {}
 
+  handleDisconnect(client: Socket) {
+    console.log('DISCONNECT');
+    const rooms = Array.from(client.rooms);
+    rooms.forEach((room) => {
+      if (room !== client.id) {
+        client.leave(room);
+      }
+    });
+
+    console.log(client);
+  }
+
+  handleConnection(client: Socket) {
+    console.log('COOONECT');
+    console.log(client);
+  }
+
   @SubscribeMessage('message')
-  handleMessage(socket: Socket, data: any) {
-    const { userId, roomId, message } = data;
+  async handleMessage(socket: Socket, data: any) {
+    const { auctionId } = data;
+
+    // 위 메세지 CHAT DB에 저장하기
+    await this.chatService.createChat(data);
 
     // 1. 메세지를 받으면 MESSAGE DB에 저장
     // 2. 받은 메세지를 접속한 방에 브로드캐스트 방식으로 전송
-    socket.to(roomId).emit('message', data);
+    socket.to(auctionId).emit('message', data);
   }
 
   @SubscribeMessage('join')
   async joinAuctionRoom(socket: Socket, data: any) {
-    const { userId, userName, roomId } = data;
+    console.log('JOINNNN');
 
-    socket.join(roomId);
+    const { userId, userName, auctionId } = data;
+
+    socket.join(auctionId);
 
     // 1. Attendance Table에서 기존에 접속한 사용자인지 확인
     const attendanceCheckResult =
-      await this.attendanceService.checkUserInAuctionRoom(userId, roomId);
+      await this.attendanceService.checkUserInAuctionRoom(userId, auctionId);
 
     // 2. 새로 접속한 사용자일 경우
     if (attendanceCheckResult.length == 0) {
       const enteredAuction =
-        await this.auctionService.getAuctionByAuctionId(roomId);
+        await this.auctionService.getAuctionByAuctionId(auctionId);
 
       // Attendance Enter SERVICE 실행 -> ATTENDANCE TABLE에 사용자 저장
       await this.attendanceService.createAttendance({
-        auctionId: roomId,
+        auctionId: auctionId,
         userId: userId,
         auctionName: enteredAuction.id,
       });
@@ -57,7 +81,7 @@ export class ChatGateway {
         auctionId: Number(enteredAuction.id),
       };
 
-      socket.to(roomId).emit('message', enterMessage);
+      socket.to(auctionId).emit('message', enterMessage);
 
       // 위 메세지 CHAT DB에 저장하기
       await this.chatService.createChat(enterMessage);
