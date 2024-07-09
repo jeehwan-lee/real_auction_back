@@ -1,4 +1,5 @@
 import { AttendaceEntity } from 'src/attendance/entities/attendance.entity';
+import { ChatEntity } from 'src/chat/entities/chat.entity';
 import { NoticeEntity } from 'src/notice/entities/notice.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
@@ -46,4 +47,7 @@ export class AuctionEntity {
 
   @OneToMany(() => AttendaceEntity, (attendance) => attendance.auction)
   attendances: AttendaceEntity[];
+
+  @OneToMany(() => ChatEntity, (chat) => chat.auction)
+  chatList: ChatEntity[];
 }

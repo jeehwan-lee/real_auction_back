@@ -6,6 +6,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { AttendanceService } from 'src/attendance/attendance.service';
 import { AuctionService } from 'src/auction/auction.service';
+import { ChatService } from './chat.service';
 
 @WebSocketGateway({ cors: 'http://localhost:3000' })
 export class ChatGateway {
@@ -14,6 +15,7 @@ export class ChatGateway {
   constructor(
     private attendanceService: AttendanceService,
     private auctionService: AuctionService,
+    private chatService: ChatService,
   ) {}
 
   @SubscribeMessage('message')
@@ -48,12 +50,17 @@ export class ChatGateway {
       });
 
       // "이지환님이 접속했습니다" 메세지 브로드캐스트 방식으로 전송
-      socket.to(roomId).emit('message', {
-        type: 'notice',
+      const enterMessage = {
+        messageType: 'notice',
         message: `${userName}님이 접속했습니다`,
-      });
+        userId: userId,
+        auctionId: Number(enteredAuction.id),
+      };
+
+      socket.to(roomId).emit('message', enterMessage);
 
       // 위 메세지 CHAT DB에 저장하기
+      await this.chatService.createChat(enterMessage);
     }
   }
 }

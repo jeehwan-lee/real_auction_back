@@ -10,12 +10,15 @@ export class ChatEntity {
   messageType: string;
 
   @Column()
+  message: string;
+
+  @Column()
   userId: number;
 
   @Column()
   auctionId: number;
 
-  @ManyToOne(() => AuctionEntity, (auction) => auction.attendances)
+  @ManyToOne(() => AuctionEntity, (auction) => auction.chatList)
   auction: AuctionEntity;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
