@@ -82,4 +82,16 @@ export class AuctionService {
       relations: ['attendances'],
     });
   }
+
+  async getAuctionByAuctionId(auctionId: number) {
+    // userId를 통해 Attendance Table에서 참석하고 있는 auctionId를 가져옴
+    const auction = await this.auctionRepository.findOne({
+      where: {
+        id: auctionId.toString(),
+      },
+      relations: ['attendances'],
+    });
+
+    return auction;
+  }
 }

@@ -7,11 +7,24 @@ import { NoticeEntity } from 'src/notice/entities/notice.entity';
 import { NoticeService } from 'src/notice/notice.service';
 import { ChatEntity } from './entities/chat.entity';
 import { ChatService } from './chat.service';
+import { AuctionService } from 'src/auction/auction.service';
+import { AuctionEntity } from 'src/auction/entities/auction.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([AttendaceEntity, NoticeEntity, ChatEntity]),
+    TypeOrmModule.forFeature([
+      AttendaceEntity,
+      NoticeEntity,
+      ChatEntity,
+      AuctionEntity,
+    ]),
   ],
-  providers: [ChatGateway, AttendanceService, NoticeService, ChatService],
+  providers: [
+    ChatGateway,
+    AttendanceService,
+    NoticeService,
+    ChatService,
+    AuctionService,
+  ],
 })
 export class ChatModule {}
