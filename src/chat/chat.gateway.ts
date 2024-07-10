@@ -22,19 +22,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleDisconnect(client: Socket) {
     console.log('DISCONNECT');
-    const rooms = Array.from(client.rooms);
-    rooms.forEach((room) => {
-      if (room !== client.id) {
-        client.leave(room);
-      }
-    });
-
-    console.log(client);
   }
 
   handleConnection(client: Socket) {
     console.log('COOONECT');
-    console.log(client);
   }
 
   @SubscribeMessage('message')
@@ -46,13 +37,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     // 1. 메세지를 받으면 MESSAGE DB에 저장
     // 2. 받은 메세지를 접속한 방에 브로드캐스트 방식으로 전송
-    socket.to(auctionId).emit('message', data);
+    //socket.to(auctionId).emit('message', data);
+    this.server.to(auctionId).emit('message', data);
   }
 
   @SubscribeMessage('join')
   async joinAuctionRoom(socket: Socket, data: any) {
-    console.log('JOINNNN');
-
     const { userId, userName, auctionId } = data;
 
     socket.join(auctionId);
@@ -81,7 +71,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         auctionId: Number(enteredAuction.id),
       };
 
-      socket.to(auctionId).emit('message', enterMessage);
+      this.server.to(auctionId).emit('message', enterMessage);
 
       // 위 메세지 CHAT DB에 저장하기
       await this.chatService.createChat(enterMessage);
