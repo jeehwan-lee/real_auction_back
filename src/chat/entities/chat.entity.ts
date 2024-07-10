@@ -23,7 +23,7 @@ export class ChatEntity {
   auction: AuctionEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.chatList)
-  user: UserEntity;
+  user?: UserEntity;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdDt: Date = new Date();

@@ -32,12 +32,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleMessage(socket: Socket, data: any) {
     const { auctionId } = data;
 
-    // 위 메세지 CHAT DB에 저장하기
+    // 1. 위 메세지 CHAT DB에 저장하기
     await this.chatService.createChat(data);
 
-    // 1. 메세지를 받으면 MESSAGE DB에 저장
     // 2. 받은 메세지를 접속한 방에 브로드캐스트 방식으로 전송
-    //socket.to(auctionId).emit('message', data);
     this.server.to(auctionId).emit('message', data);
   }
 
