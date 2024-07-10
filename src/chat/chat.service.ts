@@ -14,4 +14,14 @@ export class ChatService {
   async createChat(createChatDto: CreateChatDto) {
     return await this.chatRepository.save(createChatDto);
   }
+
+  async getChatList(auctionId: number) {
+    const chatList = await this.chatRepository.find({
+      where: { auctionId: auctionId },
+      order: { createdDt: 'DESC' },
+      take: 10,
+      skip: 0,
+    });
+    return chatList.reverse();
+  }
 }

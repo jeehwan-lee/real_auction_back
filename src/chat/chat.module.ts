@@ -9,6 +9,7 @@ import { ChatEntity } from './entities/chat.entity';
 import { ChatService } from './chat.service';
 import { AuctionService } from 'src/auction/auction.service';
 import { AuctionEntity } from 'src/auction/entities/auction.entity';
+import { ChatController } from './chat.controller';
 
 @Module({
   imports: [
@@ -26,5 +27,6 @@ import { AuctionEntity } from 'src/auction/entities/auction.entity';
     ChatService,
     AuctionService,
   ],
+  controllers: [ChatController],
 })
 export class ChatModule {}
