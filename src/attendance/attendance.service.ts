@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AttendaceEntity } from './entities/attendance.entity';
 import { Repository } from 'typeorm';
-import {
-  CreateAttendanceDto,
-  DeleteAttendanceDto,
-} from './dto/delete-attendance.dto';
 import { NoticeService } from 'src/notice/notice.service';
 import { CreateNoticeDto } from 'src/notice/dto/create-notice.dto';
+import { CreateAttendanceDto } from './dto/create-attendance.dto';
+import { DeleteAttendanceDto } from './dto/delete-attendance.dto';
 
 @Injectable()
 export class AttendanceService {
