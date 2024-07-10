@@ -1,12 +1,15 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ChatService } from './chat.service';
 
 @Controller('chat')
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
-  @Get('/list/:id')
-  async getChatList(@Param('id') auctionId: number) {
-    return await this.chatService.getChatList(auctionId);
+  @Get('/list')
+  async getChatList(
+    @Query('id') auctionId: number,
+    @Query('page') page: number,
+  ) {
+    return await this.chatService.getChatList(auctionId, page);
   }
 }
