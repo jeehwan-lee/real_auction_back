@@ -25,6 +25,9 @@ export class AuctionEntity {
   @Column()
   startPrice: string;
 
+  @Column()
+  bidIncrement: string;
+
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   endDate: Date = new Date();
 

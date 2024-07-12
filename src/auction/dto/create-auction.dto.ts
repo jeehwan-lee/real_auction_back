@@ -26,6 +26,9 @@ export class CreateAuctionDto {
   @IsString()
   startPrice: string;
 
+  @IsString()
+  bidIncrement: string;
+
   @IsDateString()
   endDate: Date = new Date();
 
