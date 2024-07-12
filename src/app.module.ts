@@ -13,6 +13,8 @@ import { NoticeModule } from './notice/notice.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { ChatGateway } from './chat/chat.gateway';
 import { ChatModule } from './chat/chat.module';
+import { BidService } from './bid/bid.service';
+import { BidModule } from './bid/bid.module';
 
 @Module({
   imports: [
@@ -33,8 +35,9 @@ import { ChatModule } from './chat/chat.module';
     NoticeModule,
     AttendanceModule,
     ChatModule,
+    BidModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService],
+  providers: [AppService, AuthService, BidService],
 })
 export class AppModule {}

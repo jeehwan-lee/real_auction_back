@@ -1,4 +1,5 @@
 import { AttendaceEntity } from 'src/attendance/entities/attendance.entity';
+import { BidEntity } from 'src/bid/entities/bid.entity';
 import { ChatEntity } from 'src/chat/entities/chat.entity';
 import { NoticeEntity } from 'src/notice/entities/notice.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
@@ -50,4 +51,7 @@ export class AuctionEntity {
 
   @OneToMany(() => ChatEntity, (chat) => chat.auction)
   chatList: ChatEntity[];
+
+  @OneToMany(() => BidEntity, (bid) => bid.auction)
+  bids: BidEntity[];
 }
