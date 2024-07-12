@@ -38,6 +38,6 @@ import { BidModule } from './bid/bid.module';
     BidModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, BidService],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}

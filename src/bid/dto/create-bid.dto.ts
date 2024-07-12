@@ -2,10 +2,13 @@ import { IsNumber, IsString } from 'class-validator';
 
 export class CreateBidDto {
   @IsNumber()
-  auctionId: number;
+  userId: number;
+
+  @IsString()
+  bidPrice: string;
 
   @IsNumber()
-  userId: number;
+  auctionId: number;
 
   @IsString()
   auctionName: string;

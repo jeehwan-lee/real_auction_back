@@ -9,6 +9,7 @@ import { Server, Socket } from 'socket.io';
 import { AttendanceService } from 'src/attendance/attendance.service';
 import { AuctionService } from 'src/auction/auction.service';
 import { ChatService } from './chat.service';
+import { BidService } from 'src/bid/bid.service';
 
 @WebSocketGateway({ cors: 'http://localhost:3000' })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -18,6 +19,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private attendanceService: AttendanceService,
     private auctionService: AuctionService,
     private chatService: ChatService,
+    private bidServce: BidService,
   ) {}
 
   handleDisconnect(client: Socket) {
@@ -74,5 +76,30 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // 위 메세지 CHAT DB에 저장하기
       await this.chatService.createChat(enterMessage);
     }
+  }
+
+  @SubscribeMessage('bidding')
+  async bidAuction(socket: Socket, data: any) {
+    const { userId, auctionId, auctionName, userName, bidPrice } = data;
+
+    await this.bidServce.createBid({
+      userId: userId,
+      auctionId: auctionId,
+      auctionName: auctionName,
+      bidPrice: bidPrice,
+    });
+
+    // "이지환님이 1,000,000원에 입찰에 참여했습니다" 메세지 브로드캐스트 방식으로 전송
+    const biddingMessage = {
+      messageType: 'notice',
+      message: `${userName}님이 ${bidPrice}원에 입찰에 참여했습니다`,
+      userId: userId,
+      auctionId: Number(auctionId),
+    };
+
+    this.server.to(auctionId).emit('message', biddingMessage);
+
+    // 위 메세지 CHAT DB에 저장하기
+    await this.chatService.createChat(biddingMessage);
   }
 }

@@ -10,6 +10,8 @@ import { ChatService } from './chat.service';
 import { AuctionService } from 'src/auction/auction.service';
 import { AuctionEntity } from 'src/auction/entities/auction.entity';
 import { ChatController } from './chat.controller';
+import { BidEntity } from 'src/bid/entities/bid.entity';
+import { BidService } from 'src/bid/bid.service';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { ChatController } from './chat.controller';
       NoticeEntity,
       ChatEntity,
       AuctionEntity,
+      BidEntity,
     ]),
   ],
   providers: [
@@ -26,6 +29,7 @@ import { ChatController } from './chat.controller';
     NoticeService,
     ChatService,
     AuctionService,
+    BidService,
   ],
   controllers: [ChatController],
 })

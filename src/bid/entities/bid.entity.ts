@@ -12,6 +12,9 @@ export class BidEntity {
   @Column()
   auctionId: number;
 
+  @Column()
+  bidPrice: string;
+
   @ManyToOne(() => AuctionEntity, (auction) => auction.attendances)
   auction: AuctionEntity;
 
