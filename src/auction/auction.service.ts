@@ -89,9 +89,13 @@ export class AuctionService {
       where: {
         id: auctionId.toString(),
       },
-      relations: ['attendances'],
+      relations: ['attendances', 'bids'],
     });
 
-    return auction;
+    const maxBid = auction.bids.sort(
+      (a, b) => Number(b.bidPrice) - Number(a.bidPrice),
+    )[0];
+
+    return { ...auction, maxBid: maxBid };
   }
 }
