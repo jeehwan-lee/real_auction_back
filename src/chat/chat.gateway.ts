@@ -78,6 +78,46 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage('exit')
+  async exitAuctionRoom(socket: Socket, data: any) {
+    const { userId, userName, auctionId, auctionName } = data;
+
+    // 1. Attendance Table에서 기존에 접속한 사용자인지 확인
+    const attendanceCheckResult =
+      await this.attendanceService.checkUserInAuctionRoom(userId, auctionId);
+
+    // 2. 참여중인 사용자일 경우
+    if (attendanceCheckResult.length != 0) {
+      // Attendance Enter SERVICE 실행 -> ATTENDANCE TABLE에 사용자 저장
+      await this.attendanceService.deleteAttendance({
+        auctionId: auctionId,
+        userId: userId,
+        auctionName: auctionName,
+      });
+
+      // 입찰한 경매 가격 모두 삭제
+
+      // "이지환님이 퇴장했습니다" 메세지 브로드캐스트 방식으로 전송
+      const enterMessage = {
+        messageType: 'notice',
+        message: `${userName}님이 퇴장했습니다`,
+        userId: userId,
+        auctionId: auctionId,
+      };
+
+      this.server.to(auctionId).emit('message', enterMessage);
+
+      // 위 메세지 CHAT DB에 저장하기
+      await this.chatService.createChat(enterMessage);
+
+      // 새로 갱신된 옥션의 입찰가 Client로 보내줌
+      const auction =
+        await this.auctionService.getAuctionByAuctionId(auctionId);
+
+      this.server.to(auctionId).emit('updateAuctionInfo', auction);
+    }
+  }
+
   @SubscribeMessage('bidding')
   async bidAuction(socket: Socket, data: any) {
     const { userId, auctionId, auctionName, userName, bidPrice } = data;
@@ -105,6 +145,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // 새로 갱신된 옥션의 입찰가 Client로 보내줌
     const auction = await this.auctionService.getAuctionByAuctionId(auctionId);
 
-    this.server.to(auctionId).emit('bidding', auction);
+    this.server.to(auctionId).emit('updateAuctionInfo', auction);
   }
 }
