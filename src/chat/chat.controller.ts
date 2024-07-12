@@ -9,7 +9,8 @@ export class ChatController {
   async getChatList(
     @Query('id') auctionId: number,
     @Query('page') page: number,
+    @Query('userId') userId: number,
   ) {
-    return await this.chatService.getChatList(auctionId, page);
+    return await this.chatService.getChatList(auctionId, page, userId);
   }
 }
