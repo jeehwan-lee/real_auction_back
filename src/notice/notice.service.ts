@@ -15,13 +15,15 @@ export class NoticeService {
     return await this.noticeRepository.save(createNoticeDto);
   }
 
-  async getNoticeListByUserId(userId: number) {
+  async getNoticeListByUserId(userId: number, page: number) {
     const noticeList = await this.noticeRepository.find({
       where: {
         userId: userId,
       },
       relations: ['user', 'auction'],
       order: { createdDt: 'DESC' },
+      take: 10,
+      skip: (page - 1) * 10,
     });
 
     return noticeList;
