@@ -101,5 +101,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     // 위 메세지 CHAT DB에 저장하기
     await this.chatService.createChat(biddingMessage);
+
+    // 새로 갱신된 옥션의 입찰가 Client로 보내줌
+    const auction = await this.auctionService.getAuctionByAuctionId(auctionId);
+
+    this.server.to(auctionId).emit('bidding', auction);
   }
 }
