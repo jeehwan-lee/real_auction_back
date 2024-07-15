@@ -31,6 +31,9 @@ export class AuctionEntity {
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   endDate: Date = new Date();
 
+  @Column({ default: 'N' })
+  close: string;
+
   @Column()
   photoUrl: string;
 

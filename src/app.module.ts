@@ -15,6 +15,7 @@ import { ChatGateway } from './chat/chat.gateway';
 import { ChatModule } from './chat/chat.module';
 import { BidService } from './bid/bid.service';
 import { BidModule } from './bid/bid.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { BidModule } from './bid/bid.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    ScheduleModule.forRoot(),
     UsersModule,
     AuthModule,
     AuctionModule,
