@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuctionService } from './auction.service';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -27,8 +35,11 @@ export class AuctionController {
   }
 
   @Get('/list/myAuction/:id')
-  async getAuctionListByUserId(@Param('id') userId: number) {
-    return await this.auctionService.getAuctionListByUserId(userId);
+  async getAuctionListByUserId(
+    @Param('id') userId: number,
+    @Query('page') page: number,
+  ) {
+    return await this.auctionService.getAuctionListByUserId(userId, page);
   }
 
   @Get('/:id')

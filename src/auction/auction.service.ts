@@ -60,7 +60,7 @@ export class AuctionService {
     return auctionList;
   }
 
-  async getAuctionListByUserId(userId: number) {
+  async getAuctionListByUserId(userId: number, page: number) {
     // userId를 통해 Attendance Table에서 참석하고 있는 auctionId를 가져옴
     const attendanceList = await this.attendanceRepository.find({
       where: {
@@ -80,6 +80,9 @@ export class AuctionService {
         id: In(auctionIdList),
       },
       relations: ['attendances'],
+      order: { createdDt: 'DESC' },
+      take: 10,
+      skip: (page - 1) * 10,
     });
   }
 
