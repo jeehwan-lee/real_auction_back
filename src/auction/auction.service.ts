@@ -41,20 +41,15 @@ export class AuctionService {
     return createdAuction;
   }
 
-  async getAuctionList() {
-    const auctionList = await this.auctionRepository.find({
-      relations: ['user', 'attendances'],
-    });
-
-    return auctionList;
-  }
-
-  async getAllAuctionListBySearchParam(searchParam: string) {
+  async getAuctionList(search: string, page: number) {
     const auctionList = await this.auctionRepository.find({
       where: {
-        name: Like(`%${searchParam}%`),
+        name: Like(`%${search}%`),
       },
       relations: ['user', 'attendances'],
+      order: { createdDt: 'DESC' },
+      take: 10,
+      skip: (page - 1) * 10,
     });
 
     return auctionList;
