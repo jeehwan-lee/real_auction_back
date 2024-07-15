@@ -11,7 +11,7 @@ import { AuctionService } from 'src/auction/auction.service';
 import { ChatService } from './chat.service';
 import { BidService } from 'src/bid/bid.service';
 
-@WebSocketGateway({ cors: 'http://localhost:3000' })
+@WebSocketGateway({ cors: '*' })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
