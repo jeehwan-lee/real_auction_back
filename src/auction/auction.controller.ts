@@ -17,6 +17,7 @@ import { Observable, interval, map } from 'rxjs';
 export class AuctionController {
   constructor(private auctionService: AuctionService) {}
 
+  @UseGuards(AuthGuard)
   @Post('/create')
   async createAuction(@Body() createAuctionDto: CreateAuctionDto) {
     return await this.auctionService.createAuction(createAuctionDto);
