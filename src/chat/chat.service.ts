@@ -18,7 +18,7 @@ export class ChatService {
     return await this.chatRepository.save(createChatDto);
   }
 
-  async getChatList(auctionId: number, page: number, userId: number) {
+  async getChatList(auctionId: number, userId: number) {
     const attendanceCheckResult =
       await this.attendanceService.checkUserInAuctionRoom(userId, auctionId);
 
@@ -32,8 +32,6 @@ export class ChatService {
         createdDt: MoreThan(attendanceCheckResult[0].createdDt),
       },
       order: { createdDt: 'DESC' },
-      take: 10,
-      skip: (page - 1) * 10,
       relations: ['user'],
     });
     return chatList.reverse();

@@ -8,9 +8,8 @@ export class ChatController {
   @Get('/list')
   async getChatList(
     @Query('id') auctionId: number,
-    @Query('page') page: number,
     @Query('userId') userId: number,
   ) {
-    return await this.chatService.getChatList(auctionId, page, userId);
+    return await this.chatService.getChatList(auctionId, userId);
   }
 }
