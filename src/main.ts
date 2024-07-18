@@ -11,6 +11,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  console.log('start');
+
   await app.listen(8000);
 }
 bootstrap();
