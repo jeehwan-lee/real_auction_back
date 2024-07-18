@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: excuting remote ssh commands
         uses: appleboy/ssh-action@v0.1.6 # ssh 접속하는 오픈소스
+        env:
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
         with:
           host: ${{ secrets.REMOTE_IP }}
           username: ${{ secrets.REMOTE_USER }} # 우분투 아이디
