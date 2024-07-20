@@ -19,7 +19,7 @@ export class AuctionEntity {
   @Column({ length: 30 })
   name: string;
 
-  @Column({ length: 60 })
+  @Column({ length: 200 })
   description: string;
 
   @Column()
