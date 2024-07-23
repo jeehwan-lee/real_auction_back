@@ -81,7 +81,13 @@ export class UsersService {
       throw new NotFoundException('이메일과 비밀번호를 확인해주세요.');
     }
 
-    const token = await this.authService.getUserToken({
+    const accessToken = await this.authService.getUserAccessToken({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+
+    const refreshToken = await this.authService.getUserRefreshToken({
       id: user.id,
       name: user.name,
       email: user.email,
@@ -92,7 +98,8 @@ export class UsersService {
       name: user.name,
       email: user.email,
       photoUrl: user.photoUrl,
-      token: token,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
     };
   }
 

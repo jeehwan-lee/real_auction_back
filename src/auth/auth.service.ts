@@ -9,11 +9,19 @@ interface User {
 
 @Injectable()
 export class AuthService {
-  getUserToken(user: User) {
+  getUserAccessToken(user: User) {
     const payload = { ...user };
 
     return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-      expiresIn: '1d',
+      expiresIn: '1h',
+    });
+  }
+
+  getUserRefreshToken(user: User) {
+    const payload = { ...user };
+
+    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: '7d',
     });
   }
 
