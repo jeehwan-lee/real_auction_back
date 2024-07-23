@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 interface User {
   id: string;
@@ -38,6 +39,17 @@ export class AuthService {
       return { userId: id, email: email };
     } catch (e) {
       throw new UnauthorizedException();
+    }
+  }
+
+  getAccessTokenByRefreshToken(refreshTokenDto: RefreshTokenDto) {
+    try {
+      this.verify(refreshTokenDto.refreshToken);
+      const newAccessToken = this.getUserAccessToken(refreshTokenDto.user);
+
+      return newAccessToken;
+    } catch {
+      return null;
     }
   }
 }
