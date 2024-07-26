@@ -102,6 +102,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       });
 
       // 입찰한 경매 가격 모두 삭제
+      await this.bidServce.deleteBid(userId, auctionId);
 
       // "이지환님이 퇴장했습니다" 메세지 브로드캐스트 방식으로 전송
       const enterMessage = {

@@ -29,4 +29,11 @@ export class BidService {
 
     return createdBid;
   }
+
+  async deleteBid(userId: number, auctionId) {
+    return await this.bidRepository.delete({
+      userId: userId,
+      auction: auctionId,
+    });
+  }
 }
